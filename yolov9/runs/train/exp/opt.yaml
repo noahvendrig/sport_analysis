@@ -1,6 +1,6 @@
-weights: C:\Users\elect\Github\sport_analysis\yolov9/weights/gelan-c.pt
-cfg: C:\Users\elect\Github\sport_analysis\yolov9/models/detect/gelan-c.yaml
-data: C:\Users\elect\Github\sport_analysis\yolov9/data.yaml
+weights: c:\Users\elect\Github\sport_analysis\yolov9/weights/gelan-c.pt
+cfg: c:\Users\elect\Github\sport_analysis\yolov9/models/detect/gelan-c.yaml
+data: c:\Users\elect\Github\sport_analysis\yolov9/data.yaml
 hyp:
   lr0: 0.01
   lrf: 0.01
@@ -43,7 +43,7 @@ evolve: null
 bucket: ''
 cache: null
 image_weights: false
-device: cpu
+device: ''
 multi_scale: false
 single_cls: false
 optimizer: SGD
