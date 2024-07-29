@@ -21,7 +21,7 @@ from pycocotools import mask as maskUtils
 from models.common import DetectMultiBackend
 from models.yolo import SegmentationModel
 from utils.callbacks import Callbacks
-from utils.coco_utils import getCocoIds, getMappingId, getMappingIndex
+from helpers.coco_utils import getCocoIds, getMappingId, getMappingIndex
 from utils.general import (LOGGER, NUM_THREADS, TQDM_BAR_FORMAT, Profile, check_dataset, check_img_size,
                            check_requirements, check_yaml, coco80_to_coco91_class, colorstr, increment_path,
                            non_max_suppression, print_args, scale_boxes, xywh2xyxy, xyxy2xywh)
@@ -491,7 +491,7 @@ def run(
             map_bbox, map50_bbox, map_mask, map50_mask = results
 
             # Semantic Segmentation
-            from utils.stuff_seg.cocostuffeval import COCOStuffeval
+            from helpers.stuff_seg.cocostuffeval import COCOStuffeval
 
             LOGGER.info(f'\nEvaluating pycocotools stuff... ')
             imgIds = [int(x) for x in img_id_list]
