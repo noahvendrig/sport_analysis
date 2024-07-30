@@ -11,21 +11,22 @@ def main():
     tracker = Tracker("models/yolov5n_best.pt")
     tracks = tracker.get_obj_tracks(vid_frames, read_pickle=True, pickle_path="pickles/tracks.pkl")
 
-    # for _, player in tracks['players'][0].items():
-    #     bounding_box = player['bounding_box']
-    #     frame = vid_frames[0]
+    for i, player in tracks['players'][0].items():
+        bounding_box = player['bounding_box']
+        frame = vid_frames[0]
 
-    #     cropped_frame = frame[int(bounding_box[1]):int(bounding_box[3]), int(bounding_box[0]):int(bounding_box[2])]
-    #     # cv2.imwrite("output/cropped_frame.jpg", cropped_frame)
-    #     desired_contours = segment_image(cropped_frame)
-    #     coordinates = get_segmentation_coordinates(desired_contours)
+        cropped_frame = frame[int(bounding_box[1]):int(bounding_box[3]), int(bounding_box[0]):int(bounding_box[2])]
+        # cv2.imwrite("output/cropped_frame.jpg", cropped_frame)
+        # desired_contours = segment_image(cropped_frame)
+        # coordinates = get_segmentation_coordinates(desired_contours)
         
-    #     cv2.drawContours(cropped_frame, desired_contours, -1, (0, 255, 0), cv2.FILLED)
-    #     cv2.imshow("image", cropped_frame)
-    #     cv2.waitKey(0)
+        # cv2.drawContours(cropped_frame, desired_contours, -1, (0, 255, 0), cv2.FILLED)
+        cv2.imwrite(f"output/cropped_frame_{i}.jpg", cropped_frame)
+        cv2.imshow("image", cropped_frame)
+        cv2.waitKey(0)
 
-    #     cv2.destroyAllWindows()
-    #     break
+        cv2.destroyAllWindows()
+        # break
     out_frames = tracker.draw_annotations(vid_frames, tracks)
 
     # Write output to new video file
