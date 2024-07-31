@@ -57,7 +57,7 @@ def segment_image(img):
 
 def k_cluster(img, n_clusters=2):
     img_2d = np.array(img).reshape(-1, 3)
-    k_means = KMeans(n_clusters=n_clusters, random_state=0).fit(img_2d)
+    k_means = KMeans(n_clusters=n_clusters, random_state=0, n_init=1).fit(img_2d)
 
     return k_means
 

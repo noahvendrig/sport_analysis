@@ -19,12 +19,21 @@ class TeamManager:
     def get_player_colour(self, frame, bounding_box):
         img = frame[int(bounding_box[1]):int(bounding_box[3]), int(bounding_box[0]):int(bounding_box[2])]
 
-        k_means = k_cluster(img, n_clusters=2)
-        k_means_img = self.get_clustered_img(img, k_means.labels_)
+        top_half = img[0:int(img.shape[0]/2), :]
 
-        weighted_avg = get_img_weighted_avg(k_means_img) # value between 0 to 1 inclusive.
-        player_cluster_idx = 1 - self.bin_round(weighted_avg) # the val is 1 or 0 so subtract from 1 get opposite
+        k_means = k_cluster(top_half, n_clusters=2)
+        k_means_img = self.get_clustered_img(top_half, k_means.labels_)
+
+        corner_clusters = [k_means_img[0, 0], k_means_img[0, -1], k_means_img[-1, 0], k_means_img[-1, -1]]
+        non_player_cluster = max(set(corner_clusters), key=corner_clusters.count) # get the most common cluster in the corners
+        
+        player_cluster_idx = 1 - non_player_cluster
         player_colour = k_means.cluster_centers_[player_cluster_idx] # returns colour from segmentation, however this is not the true colour. it will be some shade of the real colour (which we cluster later)
+        return player_colour
+
+        # weighted_avg = get_img_weighted_avg(k_means_img) # value between 0 to 1 inclusive.
+        # player_cluster_idx = 1 - self.bin_round(weighted_avg) # the val is 1 or 0 so subtract from 1 get opposite
+        # player_colour = k_means.cluster_centers_[player_cluster_idx] # returns colour from segmentation, however this is not the true colour. it will be some shade of the real colour (which we cluster later)
 
         return player_colour
     

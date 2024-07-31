@@ -121,7 +121,7 @@ class Tracker:
             if track_id > 9: # account for bigger num (visual effect)
                 text_x -= 5
             if track_id > 99: # account for bigger num (visual effect)
-                text_x -= 10
+                text_x -= 7
             
             c = get_bounding_box_centre((rect_x1, rect_y1, rect_x2, rect_y2))
         
