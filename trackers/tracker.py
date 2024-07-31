@@ -138,17 +138,18 @@ class Tracker:
             referees_dict = tracks["referees"][frame_n]
 
             for track_id, player in players_dict.items():
-                frame = self.draw_ellipse(frame, player["bounding_box"], (255, 234, 48), track_id)
+                player_colour = player.get("team_colour", (255, 234, 48))
+                frame = self.draw_ellipse(frame, player["bounding_box"], player_colour, track_id)
 
-                bounding_box = player["bounding_box"]
-                cropped_frame = frame[int(bounding_box[1]):int(bounding_box[3]), int(bounding_box[0]):int(bounding_box[2])]
-                desired_contours = segment_image(cropped_frame)
+                # bounding_box = player["bounding_box"]
+                # cropped_frame = frame[int(bounding_box[1]):int(bounding_box[3]), int(bounding_box[0]):int(bounding_box[2])]
+                # desired_contours = segment_image(cropped_frame)
 
-                cv2.drawContours(cropped_frame, desired_contours, -1, (0, 255, 0), cv2.FILLED)
-                cv2.imshow("image", cropped_frame)
-                cv2.waitKey(0)
+                # cv2.drawContours(cropped_frame, desired_contours, -1, (0, 255, 0), cv2.FILLED)
+                # cv2.imshow("image", cropped_frame)
+                # cv2.waitKey(0)
 
-                cv2.destroyAllWindows()
+                # cv2.destroyAllWindows()
                 # break
 
             for _, referee in referees_dict.items():

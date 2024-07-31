@@ -1,6 +1,7 @@
 import cv2
-from helpers import read_video, write_video, segment_image, get_segmentation_coordinates
+from helpers import read_video, write_video
 from trackers import Tracker
+from team_management import TeamManager
 
 def main():
     # Read input video
@@ -11,27 +12,22 @@ def main():
     tracker = Tracker("models/yolov5n_best.pt")
     tracks = tracker.get_obj_tracks(vid_frames, read_pickle=True, pickle_path="pickles/tracks.pkl")
 
-    for i, player in tracks['players'][0].items():
-        bounding_box = player['bounding_box']
-        frame = vid_frames[0]
+    # assingn player to teams
+    team_manager = TeamManager()
+    team_manager.assign_team_colour(vid_frames[0], tracks["players"][0])
 
-        cropped_frame = frame[int(bounding_box[1]):int(bounding_box[3]), int(bounding_box[0]):int(bounding_box[2])]
-        # cv2.imwrite("output/cropped_frame.jpg", cropped_frame)
-        # desired_contours = segment_image(cropped_frame)
-        # coordinates = get_segmentation_coordinates(desired_contours)
-        
-        # cv2.drawContours(cropped_frame, desired_contours, -1, (0, 255, 0), cv2.FILLED)
-        cv2.imwrite(f"output/cropped_frame_{i}.jpg", cropped_frame)
-        cv2.imshow("image", cropped_frame)
-        cv2.waitKey(0)
-
-        cv2.destroyAllWindows()
-        # break
+    for frame_n, player_track in enumerate(tracks["players"]):
+        for player_id, track in player_track.items():
+            team_id = team_manager.assign_team(vid_frames[frame_n], track["bounding_box"], player_id)
+            # track["team_id"] = team_id
+            tracks["players"][frame_n][player_id]["team"] = team_id
+            tracks["players"][frame_n][player_id]["team_colour"] = team_manager.team_colours[team_id]
+    
     out_frames = tracker.draw_annotations(vid_frames, tracks)
 
     # Write output to new video file
     out_filename = filename.split(".")[0]+".avi"
-    # write_video(out_frames, f"output/{out_filename}")
+    write_video(out_frames, f"output/{out_filename}")
 
 
 if __name__=="__main__":
