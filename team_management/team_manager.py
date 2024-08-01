@@ -44,10 +44,13 @@ class TeamManager:
             player_colour = self.get_player_colour(frame, bounding_box) # send cropped img to the segmentation
             
             rough_player_colours.append(player_colour)
+        
 
         k_means_teams = k_cluster(rough_player_colours, n_clusters=2)
 
         self.k_means_teams = k_means_teams
+        # print("k_means_teams.cluster_centers_: ", k_means_teams.cluster_centers_)
+        # return
 
         self.team_colours[0] = k_means_teams.cluster_centers_[0]
         self.team_colours[1] = k_means_teams.cluster_centers_[1]

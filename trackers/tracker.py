@@ -133,9 +133,12 @@ class Tracker:
         for frame_n, frame in enumerate(frames):
             frame = frame.copy()
 
-            players_dict = tracks["players"][frame_n]
-            ball_dict = tracks["ball"][frame_n]
-            referees_dict = tracks["referees"][frame_n]
+            try: 
+                players_dict = tracks["players"][frame_n]
+                ball_dict = tracks["ball"][frame_n]
+                referees_dict = tracks["referees"][frame_n]
+            except:
+                break
 
             for track_id, player in players_dict.items():
                 player_colour = player.get("team_colour", (255, 234, 48))

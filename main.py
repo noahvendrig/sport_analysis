@@ -5,12 +5,13 @@ from team_management import TeamManager
 
 def main():
     # Read input video
-    filename = "test1.mp4"
+    # filename = "test1.mp4"
+    filename = "edited_che_mun_1.mov"
     vid_frames = read_video(f"input/{filename}")
 
     # Perform inference on each frame
     tracker = Tracker("models/yolov5n_best.pt")
-    tracks = tracker.get_obj_tracks(vid_frames, read_pickle=True, pickle_path="pickles/tracks.pkl")
+    tracks = tracker.get_obj_tracks(vid_frames, read_pickle=True, pickle_path="pickles/tracks1.pkl")
 
     # assingn player to teams
     team_manager = TeamManager()
