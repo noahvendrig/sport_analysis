@@ -16,6 +16,7 @@ class Tracker:
             model_path # replace with custom trained model later
         )
         self.tracker = sv.ByteTrack()
+        self.count = 0
 
     def detect_frames(self, frames):
         batch_size=20
@@ -135,13 +136,28 @@ class Tracker:
 
             try: 
                 players_dict = tracks["players"][frame_n]
-                ball_dict = tracks["ball"][frame_n]
+                ball_dict = tracks["ball"][frame_n]          
                 referees_dict = tracks["referees"][frame_n]
             except:
                 break
 
             for track_id, player in players_dict.items():
                 player_colour = player.get("team_colour", (255, 234, 48))
+                
+                if len(list(ball_dict.keys())) > 0:
+                    first_ball_key = list(ball_dict.keys())[0]
+                    first_ball_track = ball_dict[first_ball_key]
+                
+                    if "nearby_players" in first_ball_track and track_id in first_ball_track["nearby_players"]:
+                        print("frame ",frame_n,": ", first_ball_track)
+                        self.count += 1
+                        if self.count > 50:
+                            return
+                        # return
+                        player_colour = (0, 255, 0)
+                    else:
+                        player_colour = player.get("team_colour", (255, 234, 48))
+                    
                 frame = self.draw_ellipse(frame, player["bounding_box"], player_colour, track_id)
 
                 # bounding_box = player["bounding_box"]
